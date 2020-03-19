@@ -6,11 +6,7 @@ import * as ActionTypes from './ActionTypes';
 export const fetchRooms = (dispatch: Dispatch) => async (accessToken: string) => {
     dispatch(roomsLoading());
 
-    return fetch(baseUrl + 'rooms', {
-        method: 'GET',
-        mode: 'no-cors',
-        credentials: 'include'
-    })
+    return fetch(baseUrl + 'v1/rooms/available?accessToken=' + accessToken)
         .then(response => {
             if (response.ok) {
                 return response;
