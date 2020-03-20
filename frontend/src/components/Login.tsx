@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useCookies } from "react-cookie";
 import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline, GoogleLogout } from 'react-google-login';
 import { Button, Col, Media, Popover, PopoverBody, PopoverHeader, Row } from 'reactstrap';
 import { User } from '../redux/user';
@@ -13,7 +12,6 @@ type LoginProps = {
 
 export const Login = (props: LoginProps) => {
     const [popoverOpen, setPopoverOpen] = useState(false);
-    const [, setCookie] = useCookies(['accessToken']);
 
     const toggle = () => setPopoverOpen(!popoverOpen);
 
@@ -23,12 +21,10 @@ export const Login = (props: LoginProps) => {
 
     const handleLogoutSuccess = (): void => {
         setPopoverOpen(false);
-        setCookie('accessToken', "", { path: '/' });
         props.userSignedOut();
     }
 
     const handleLoginSuccess = (response: GoogleLoginResponse | GoogleLoginResponseOffline): void => {
-        setCookie('accessToken', (response as GoogleLoginResponse)?.accessToken, { path: '/' });
         props.userSignedIn(response);
     }
 
