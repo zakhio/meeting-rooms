@@ -5,6 +5,13 @@ import { EventsController } from './events.controller';
 import { EventsService } from './events.service';
 import { AuthenticationMiddleware } from 'src/common/authentication.middleware';
 
+/**
+ * Module for Events management.
+ * 
+ * It uses Google Calendar Event to determine events.
+ * 
+ * @see [Event documentation](https://developers.google.com/calendar/v3/reference/events)
+ */
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Event', schema: EventSchema }]),

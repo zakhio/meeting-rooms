@@ -9,6 +9,11 @@ import * as moment from 'moment';
 export class RoomsService {
     constructor() { }
 
+    /**
+     * Returns the list of rooms which current account has access to.
+     * 
+     * @param accessToken user's access token
+     */
     @CacheTTL(20)
     @UseInterceptors(CacheInterceptor)
     async getAllRooms(accessToken: string): Promise<Room[]> {
@@ -47,6 +52,12 @@ export class RoomsService {
         });
     }
 
+    /**
+     * Returns the list of rooms with their busy status for specified number of minutes.
+     * 
+     * @param accessToken user's access token
+     * @param minutes number of minutes for busy status
+     */
     async getFreeRooms(accessToken: string, minutes: number): Promise<Room[]> {
         const oauth2Client: OAuth2Client = new google.auth.OAuth2({
             clientId: process.env.GOOGLE_CLIENT_ID!,

@@ -6,9 +6,14 @@ import { Room } from './interfaces/room.interface';
 export class RoomsController {
     constructor(private roomsService: RoomsService) { }
 
-    // Fetch all events
+    /**
+     * Returns a list of rooms which are available for booking with their
+     * status in 20 mins.
+     * 
+     * @param accessToken user's access token
+     */
     @Get('available')
-    async getEvents(@Query('accessToken') accessToken: string): Promise<Room[]> {
+    async getAvailableRooms(@Query('accessToken') accessToken: string): Promise<Room[]> {
         const rooms = await this.roomsService.getFreeRooms(accessToken, 20);
         return rooms;
     }

@@ -29,7 +29,11 @@ export class EventsController {
         return res.status(HttpStatus.OK).json(event);
     }
 
-    // Fetch all events
+    /**
+     * Returns the list of future calendar events for user.
+     * 
+     * @param accessToken user's access token
+     */
     @Get('events')
     async getEvents(@Query('accessToken') accessToken: string): Promise<CalendarEvent[]> {
         const events = await this.eventsService.getEvents(accessToken);

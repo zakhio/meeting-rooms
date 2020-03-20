@@ -23,6 +23,11 @@ export class EventsService {
         return event;
     }
 
+    /**
+     * Returns the list of future calendar events for user.
+     * 
+     * @param accessToken user's access token
+     */
     async getEvents(accessToken: string): Promise<CalendarEvent[]> {
         const oauth2Client: OAuth2Client = new google.auth.OAuth2({
             clientId: process.env.GOOGLE_CLIENT_ID!,
