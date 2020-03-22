@@ -13,8 +13,8 @@ export class RoomsController {
      * @param accessToken user's access token
      */
     @Get('available')
-    async getAvailableRooms(@Query('accessToken') accessToken: string): Promise<Room[]> {
-        const rooms = await this.roomsService.getFreeRooms(accessToken, 20);
+    async getAvailableRooms(@Query('accessToken') accessToken: string, @Query('minutes') minutes: number): Promise<Room[]> {
+        const rooms = await this.roomsService.getFreeRooms(accessToken, minutes);
         return rooms;
     }
 }

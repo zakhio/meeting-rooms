@@ -1,29 +1,39 @@
 import React from 'react';
-import {Breadcrumb, BreadcrumbItem, Card, CardImg, CardImgOverlay, CardTitle} from 'reactstrap';
-import {Link} from "react-router-dom";
-import {Loading} from "./Loading";
-import {baseUrl} from "../shared/baseUrl";
-import { RoomsState, Room } from '../redux/rooms';
+import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
+import { Room, RoomsState } from '../redux/rooms';
+import { Loading } from "./Loading";
+import moment from "moment";
 
-function RenderRoomItem({room}: {room: Room}) {
+function RenderRoomItem({ room }: { room: Room }) {
+    let statusText = "Free";
+    let colorClass = "text-success";
+    const now = moment();
+
+    if (room.occupation.until) {
+        statusText = `Occupied for ${room.occupation.until.diff(now, "m")} min`;
+        colorClass = "text-danger";
+    } else if (room.occupation.next) {
+        statusText = `Free for ${room.occupation.next.diff(now, "m")} min`;
+        if (room.freeMinutes > 0 && room.freeMinutes < 5) {
+            colorClass = "text-warning";
+        }
+    }
+
     return (
-        <Card>
-            <Link to={`/menu/${room.id}`}>
-                <CardImg width="100%" src={baseUrl + room.image} alt={room.name}/>
-                <CardImgOverlay>
-                    <CardTitle>{room.name}</CardTitle>
-                </CardImgOverlay>
-            </Link>
-        </Card>
+        <ListGroupItem key={room.id}>
+            <ListGroupItemHeading>{room.name}&nbsp;<span className={colorClass}>{statusText}</span></ListGroupItemHeading>
+            <ListGroupItemText style={{ marginBottom: 0 }}>Floor: {room.floor}. Room capacity: {room.capacity}.</ListGroupItemText>
+        </ListGroupItem>
     )
 }
 
-const Rooms = (props: {rooms: RoomsState}) => {
-    const menu = props.rooms.rooms.map((room) => {
+const Rooms = (props: { rooms: RoomsState }) => {
+    const rooms: Room[] = props.rooms.rooms.slice();
+    rooms.sort((r1, r2) => r1.freeMinutes - r2.freeMinutes).reverse();
+
+    const roomItems = rooms.map((room) => {
         return (
-            <div key={room.id} className="col-12 col-md-5 m-1">
-                <RenderRoomItem room={room}/>
-            </div>
+            <RenderRoomItem room={room} />
         )
     });
 
@@ -31,7 +41,7 @@ const Rooms = (props: {rooms: RoomsState}) => {
         return (
             <div className="container">
                 <div className="row">
-                    <Loading/>
+                    <Loading />
                 </div>
             </div>
         );
@@ -47,18 +57,14 @@ const Rooms = (props: {rooms: RoomsState}) => {
         return (
             <div className="container">
                 <div className="row">
-                    <Breadcrumb>
-                        <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>Menu</BreadcrumbItem>
-                    </Breadcrumb>
                     <div className="col-12">
-                        <h3>Menu</h3>
-                        <hr/>
+                        <h3>Free Meeting Rooms</h3>
+                        <hr />
                     </div>
                 </div>
-                <div className="row">
-                    {menu}
-                </div>
+                <ListGroup>
+                    {roomItems}
+                </ListGroup>
             </div>
         );
     }

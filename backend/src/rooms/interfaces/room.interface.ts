@@ -1,6 +1,11 @@
 export interface Room {
+  readonly id: string;
   readonly name: string;
   readonly email: string;
   readonly floor: string;
-  readonly busy?: {};
+  readonly capacity: number;
+  readonly busy?: {
+    end?: string | null;
+    start?: string | null;
+  }[];
 }

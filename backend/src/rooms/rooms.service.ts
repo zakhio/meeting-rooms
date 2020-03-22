@@ -42,9 +42,11 @@ export class RoomsService {
 
                 const rooms: Room[] =
                     res!.data.items!.map((item): Room => ({
+                        id: item.resourceId,
                         email: item.resourceEmail,
                         name: item.resourceName,
-                        floor: item.floorName
+                        floor: item.floorName,
+                        capacity: item.capacity
                     }));
 
                 resolve(rooms);
