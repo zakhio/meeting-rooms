@@ -16,7 +16,7 @@ export class RoomsService {
      */
     @CacheTTL(20)
     @UseInterceptors(CacheInterceptor)
-    async getAllRooms(accessToken: string): Promise<Room[]> {
+    getAllRooms(accessToken: string): Promise<Room[]> {
         const oauth2Client: OAuth2Client = new google.auth.OAuth2({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!
