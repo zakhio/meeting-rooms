@@ -6,7 +6,16 @@ import * as ActionTypes from './ActionTypes';
 export const fetchRooms = (dispatch: Dispatch) => async (accessToken: string) => {
     dispatch(roomsLoading());
 
-    return fetch(baseUrl + 'v1/rooms/available?accessToken=' + accessToken + "&minutes=60")
+    const token = localStorage.token;
+
+    return fetch(baseUrl + 'v1/rooms/available?&minutes=60',
+        {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
         .then(response => {
             if (response.ok) {
                 return response;
@@ -40,9 +49,11 @@ export const addRooms = (rooms: []): AnyAction => ({
 
 export const userSignedIn = (dispatch: Dispatch) => (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
     let loginResponse = (response as GoogleLoginResponse);
-    if (loginResponse.accessToken !== undefined) {
+    const accessToken = loginResponse.accessToken;
+    if (accessToken !== undefined) {
+        localStorage.setItem("token", accessToken);
         dispatch(userLoginSuccess(loginResponse));
-        fetchRooms(dispatch)(loginResponse.accessToken);
+        fetchRooms(dispatch)(accessToken);
     }
 };
 

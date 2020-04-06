@@ -1,4 +1,5 @@
-import { BadRequestException, Controller, Get, ParseIntPipe, Query } from '@nestjs/common';
+import { BadRequestException, Controller, Get, ParseIntPipe, Query, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Room } from './interfaces/room.interface';
 import { RoomsService } from './rooms.service';
 
@@ -10,14 +11,15 @@ export class RoomsController {
      * Returns a list of rooms which are available for booking with their
      * status in 20 mins.
      * 
-     * @param accessToken user's access token
+     * @param minutes number of minutes to which availablity needs to be checked (must be positive).
      */
     @Get('available')
-    getAvailableRooms(@Query('accessToken') accessToken: string, @Query('minutes', ParseIntPipe) minutes: number): Promise<Room[]> {
+    @UseGuards(AuthGuard('token'))
+    getAvailableRooms(@Req() req, @Query('minutes', ParseIntPipe) minutes: number): Promise<Room[]> {
         if (minutes <= 0) {
             throw new BadRequestException("Parameter 'minutes' must be a positive number.");
         }
 
-        return this.roomsService.getFreeRooms(accessToken, minutes);
+        return this.roomsService.getFreeRooms(req.user.token, minutes);
     }
 }
