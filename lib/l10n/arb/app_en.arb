@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "counterAppBarTitle": "Meeting Rooms",
+  "@counterAppBarTitle": {
+    "description": "Text shown in the AppBar of the Counter Page"
+  }
+}
