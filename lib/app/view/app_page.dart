@@ -36,7 +36,7 @@ class AppPageState extends State<AppPage> {
   Set<String?> _categories = {};
   Set<String?> _buildingIds = {};
   Set<String?> _selectedCategories = {};
-  Set<String?> _selectedBuildingIds = {};
+  final Set<String?> _selectedBuildingIds = {};
   Set<String?> _nonBookableCalendarResource = {};
 
   SplayTreeMap<String, SplayTreeMap<String, List<CalendarResource>>>
@@ -152,7 +152,8 @@ class AppPageState extends State<AppPage> {
     do {
       resources = await DirectoryApi(client).resources.calendars.list(
             'my_customer',
-            // query: 'resourceCategory = CONFERENCE_ROOM AND buildingId = Munich'
+            // query: 'resourceCategory = CONFERENCE_ROOM
+            // AND buildingId = Munich'
           );
       if (resources.items != null) {
         result.addAll(resources.items!);
@@ -190,7 +191,7 @@ class AppPageState extends State<AppPage> {
     try {
       await _googleSignIn.signIn();
     } catch (error) {
-      print(error);
+      debugPrint(error.toString());
     }
   }
 
@@ -412,11 +413,6 @@ class AppPageState extends State<AppPage> {
           }
         }
       }
-    }
-    final errors = freeBusy?.errors;
-    String? error;
-    if (errors != null && errors.isNotEmpty) {
-      error = errors[0].reason;
     }
 
     return Card(

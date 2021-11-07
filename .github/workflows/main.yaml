@@ -1,6 +1,6 @@
 name: meeting_rooms
 
-on: [pull_request, push]
+on: [ pull_request, push ]
 
 jobs:
   build:
@@ -8,20 +8,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - uses: subosito/flutter-action@v1.5.3
-
       - name: Install Dependencies
         run: flutter packages get
-
       - name: Format
         run: flutter format --set-exit-if-changed lib test
-
       - name: Analyze
         run: flutter analyze lib test
-
       - name: Run tests
         run: flutter test --no-pub --coverage --test-randomize-ordering-seed random
-
       - name: Check Code Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
+      - name: Web Build
+        run: flutter build web --dart-define=OAUTH_CLIENT_ID=${{secrets.OAUTH_CLIENT_ID}} --target lib/main_production.dart
+      - name: Deploy to Production server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rltgoDzvO"
+          SOURCE: "build/web"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.REMOTE_TARGET }}
