@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/admin/directory_v1.dart';
 import 'package:googleapis/calendar/v3.dart' hide Colors;
 import 'package:googleapis_auth/googleapis_auth.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:meeting_rooms/l10n/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -442,10 +443,14 @@ class AppPageState extends State<AppPage> {
     );
 
     if (_currentUser == null) {
-      return OutlinedButton(
+      return OutlinedButton.icon(
         onPressed: _handleSignIn,
         style: style,
-        child: const Text('Sign in with Google'),
+        icon: const Icon(
+          MdiIcons.google,
+          size: 18,
+        ),
+        label: const Text('Sign in with Google'),
       );
     } else {
       return Row(

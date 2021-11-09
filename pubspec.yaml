@@ -12,13 +12,14 @@ dependencies:
   extension_google_sign_in_as_googleapis_auth: ^2.0.4
   flutter:
     sdk: flutter
-  flutter_bloc: ^7.3.2
+  flutter_bloc: ^7.3.3
   flutter_localizations:
     sdk: flutter
   google_sign_in: ^5.2.1
   googleapis: ^7.0.0
   googleapis_auth: ^1.2.0
   intl: ^0.17.0
+  material_design_icons_flutter: ^5.0.6295
   url_launcher: ^6.0.12
 
 dev_dependencies:
