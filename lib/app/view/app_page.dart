@@ -329,12 +329,11 @@ class AppPageState extends State<AppPage> {
     } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          const Text('You are not currently signed in.'),
-          ElevatedButton(
-            onPressed: _handleSignIn,
-            child: const Text('SIGN IN'),
-          ),
+        children: const <Widget>[
+          Text('This is small application that tries to '
+              'address the situation when you urgently need a meeting room, '
+              'but it is hard to find one in Google Calendar. '
+              'Just click on `Sign in with Google` in the right top corner.')
         ],
       );
     }
@@ -446,7 +445,7 @@ class AppPageState extends State<AppPage> {
       return OutlinedButton(
         onPressed: _handleSignIn,
         style: style,
-        child: const Text('Login'),
+        child: const Text('Sign in with Google'),
       );
     } else {
       return Row(
