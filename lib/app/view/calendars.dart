@@ -173,115 +173,106 @@ class CalendarsState extends State<Calendars> {
       _handleGetCalendarResources();
     }
 
-    if (_authenticatedClient != null) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton.icon(
-              onPressed: () async {
-                const urlString = 'https://www.buymeacoffee.com/zakhio';
-                if (await canLaunch(urlString)) {
-                  await launch(urlString);
-                }
-              },
-              icon: const Icon(Icons.coffee_outlined),
-              label: Text(
-                'Support me with a coffee',
-                style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      decoration: TextDecoration.underline,
-                    ),
-              ),
+    // Retrieve an [auth.AuthClient] from the current [GoogleSignIn] instance.
+    assert(_authenticatedClient != null, 'Authenticated client missing!');
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            onPressed: () async {
+              const urlString = 'https://www.buymeacoffee.com/zakhio';
+              if (await canLaunch(urlString)) {
+                await launch(urlString);
+              }
+            },
+            icon: const Icon(Icons.coffee_outlined),
+            label: Text(
+              'Support me with a coffee',
+              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    decoration: TextDecoration.underline,
+                  ),
             ),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Wrap(
-                      spacing: 3,
-                      runSpacing: 3,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        const Text('Categories:'),
-                        for (final String? category in _categories)
-                          FilterChip(
-                            label: Text(category ?? '<EMPTY>'),
-                            selected: _selectedCategories.contains(category),
-                            labelStyle: Theme.of(context).textTheme.bodyText2,
-                            onSelected: (value) async {
-                              setState(() {
-                                if (_selectedCategories.contains(category)) {
-                                  _selectedCategories.remove(category);
-                                } else {
-                                  _selectedCategories.add(category);
-                                }
-                              });
-                              await _refreshFreeBusy();
-                            },
-                          )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Wrap(
-                      spacing: 3,
-                      runSpacing: 3,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        const Text('Building:'),
-                        for (final String? buildingId in _buildingIds)
-                          FilterChip(
-                            label: Text(buildingId ?? '<EMPTY>'),
-                            selected: _selectedBuildingIds.contains(buildingId),
-                            onSelected: (value) async {
-                              setState(() {
-                                if (_selectedBuildingIds.contains(buildingId)) {
-                                  _selectedBuildingIds.remove(buildingId);
-                                } else {
-                                  _selectedBuildingIds.add(buildingId);
-                                }
-                              });
-                              await _refreshFreeBusy();
-                            },
-                          )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Column(
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  IconButton(
-                    onPressed: _handleGetCalendarResources,
-                    icon: const Icon(Icons.sync),
+                  Wrap(
+                    spacing: 3,
+                    runSpacing: 3,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      const Text('Categories:'),
+                      for (final String? category in _categories)
+                        FilterChip(
+                          label: Text(category ?? '<EMPTY>'),
+                          selected: _selectedCategories.contains(category),
+                          labelStyle: Theme.of(context).textTheme.bodyText2,
+                          onSelected: (value) async {
+                            setState(() {
+                              if (_selectedCategories.contains(category)) {
+                                _selectedCategories.remove(category);
+                              } else {
+                                _selectedCategories.add(category);
+                              }
+                            });
+                            await _refreshFreeBusy();
+                          },
+                        )
+                    ],
                   ),
-                  Text(_contactText),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Wrap(
+                    spacing: 3,
+                    runSpacing: 3,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      const Text('Building:'),
+                      for (final String? buildingId in _buildingIds)
+                        FilterChip(
+                          label: Text(buildingId ?? '<EMPTY>'),
+                          selected: _selectedBuildingIds.contains(buildingId),
+                          onSelected: (value) async {
+                            setState(() {
+                              if (_selectedBuildingIds.contains(buildingId)) {
+                                _selectedBuildingIds.remove(buildingId);
+                              } else {
+                                _selectedBuildingIds.add(buildingId);
+                              }
+                            });
+                            await _refreshFreeBusy();
+                          },
+                        )
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
-          for (final String buildingId in _calendarResourcesMap.keys)
-            if (_selectedBuildingIds.contains(buildingId))
-              buildBuildingWidget(buildingId, context)
-        ],
-      );
-    } else {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: const <Widget>[
-          Text('This is small application that tries to '
-              'address the situation when you urgently need a meeting room, '
-              'but it is hard to find one in Google Calendar. '
-              'Just click on `Sign in with Google` in the right top corner.')
-        ],
-      );
-    }
+            ),
+            Column(
+              children: [
+                IconButton(
+                  onPressed: _handleGetCalendarResources,
+                  icon: const Icon(Icons.sync),
+                ),
+                Text(_contactText),
+              ],
+            ),
+          ],
+        ),
+        for (final String buildingId in _calendarResourcesMap.keys)
+          if (_selectedBuildingIds.contains(buildingId))
+            buildBuildingWidget(buildingId, context)
+      ],
+    );
   }
 
   Widget buildBuildingWidget(String buildingId, BuildContext context) {
