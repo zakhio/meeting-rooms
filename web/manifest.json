@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A Very Good Project created by Very Good CLI.",
+    "description": "App to find a free meeting room.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
