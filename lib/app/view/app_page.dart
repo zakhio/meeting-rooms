@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meeting_rooms/app/cubit/account_cubit.dart';
+import 'package:meeting_rooms/app/cubit/calendars_cubit.dart';
+import 'package:meeting_rooms/app/repository/calendars_data_provider.dart';
 import 'package:meeting_rooms/app/view/application_information.dart';
 import 'package:meeting_rooms/app/view/calendars.dart';
 import 'package:meeting_rooms/app/view/login.dart';
@@ -13,8 +15,17 @@ class AppPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AccountCubit()..signInSilently(),
+    final dataProvider = CalendarsDataProvider();
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AccountCubit>(
+          create: (_) => AccountCubit()..signInSilently(),
+        ),
+        BlocProvider<CalendarsCubit>(
+          create: (BuildContext context) =>
+              CalendarsCubit(context.read<AccountCubit>(), dataProvider),
+        ),
+      ],
       child: const AppPageView(),
     );
   }

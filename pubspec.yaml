@@ -20,10 +20,10 @@ dependencies:
   googleapis_auth: ^1.2.0
   intl: ^0.17.0
   material_design_icons_flutter: ^5.0.6295
-  url_launcher: ^6.0.12
+  url_launcher: ^6.0.13
 
 dev_dependencies:
-  bloc_test: ^8.4.0
+  bloc_test: ^8.5.0
   flutter_test:
     sdk: flutter
   mocktail: ^0.2.0
