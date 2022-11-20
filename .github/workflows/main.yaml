@@ -8,8 +8,10 @@ jobs:
     environment: production
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1.5.3
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
       - name: Install Dependencies
         run: flutter packages get
       - name: Format
@@ -18,8 +20,6 @@ jobs:
         run: flutter analyze lib test
       - name: Run tests
         run: flutter test --no-pub --coverage --test-randomize-ordering-seed random
-      #      - name: Check Code Coverage
-      #        uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
       - name: Web Build
         run: flutter build web --dart-define=OAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }} --target lib/main_production.dart
       - name: Deploy to Production server

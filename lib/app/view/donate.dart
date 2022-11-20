@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 /// Donate information implemented as link to buymeacoffee.com.
 class Donate extends StatelessWidget {
@@ -10,8 +10,8 @@ class Donate extends StatelessWidget {
     return TextButton.icon(
       onPressed: () async {
         const urlString = 'https://www.buymeacoffee.com/zakhio';
-        if (await canLaunch(urlString)) {
-          await launch(urlString);
+        if (await canLaunchUrlString(urlString)) {
+          await launchUrlString(urlString);
         }
       },
       icon: const Icon(Icons.coffee_outlined),

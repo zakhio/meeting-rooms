@@ -13,7 +13,7 @@ class Login extends StatelessWidget {
     final user = context.select((AccountCubit cubit) => cubit.state?.user);
 
     final style = OutlinedButton.styleFrom(
-      primary: Colors.white,
+      foregroundColor: Colors.white,
       side: const BorderSide(color: Colors.white),
     );
 
