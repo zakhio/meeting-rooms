@@ -41,7 +41,7 @@ class AppPageView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.counterAppBarTitle),
+        title: Text(l10n.meetingRoomsAppBarTitle),
         centerTitle: false,
         actions: const [
           Padding(

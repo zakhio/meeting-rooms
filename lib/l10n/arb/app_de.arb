@@ -1,0 +1,7 @@
+{
+  "@@locale": "de",
+  "meetingRoomsAppBarTitle": "Besprechungsräumen",
+  "@meetingRoomsAppBarTitle": {
+    "description": "App, um einen freien Besprechungsraum zu finden."
+  }
+}
